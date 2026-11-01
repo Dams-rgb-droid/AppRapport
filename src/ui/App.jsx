@@ -17,6 +17,14 @@ export default function App() {
     setSt({ params: p, listes: await DB.listes(), sites: await DB.sites(), rapports: await DB.rapports(), logo: p.logo instanceof Blob ? p.logo : null });
   }, []);
   useEffect(() => { (async () => { await DB.init(); await reload(); setPrêt(true); if (navigator.storage?.persist) navigator.storage.persist().catch(() => {}); })(); }, [reload]);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [ouvert, vue]);
   const toast = useCallback((t) => { setMsg(t); clearTimeout(toast.t); toast.t = setTimeout(() => setMsg(""), 4500); }, []);
   if (!prêt) return <div className="vide">Chargement…</div>;
   const ctx = { ...st, ipCentre: st.params.ip_centre || {}, reload, toast };
