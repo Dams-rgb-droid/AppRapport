@@ -32,7 +32,7 @@ export default function App() {
   const fermerRapport = () => { setOuvert(null); reload(); };
   return (
     <Ctx.Provider value={ctx}>
-      <div className={"app " + (ouvert ? "edition" : "accueil")}>
+      <div className="app">
         <nav className={"nav" + (ouvert ? " masque" : "")} aria-hidden={!!ouvert}>{ONGLETS.map(([k, t, i]) => <button key={k} className={vue === k ? "actif" : ""} onClick={() => setVue(k)} tabIndex={ouvert ? -1 : 0}><span>{i}</span>{t}</button>)}</nav>
         <main ref={mainRef}>
           {ouvert ? <Formulaire id={ouvert} onFerme={fermerRapport} />
