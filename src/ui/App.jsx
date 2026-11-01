@@ -34,7 +34,7 @@ export default function App() {
   return (
     <Ctx.Provider value={ctx}>
       <div className="app">
-        {!ouvert && <nav className="nav">{ONGLETS.map(([k, t, i]) => <button key={k} className={vue === k ? "actif" : ""} onClick={() => setVue(k)}><span>{i}</span>{t}</button>)}</nav>}
+        <nav className={"nav" + (ouvert ? " masque" : "")} aria-hidden={!!ouvert}>{ONGLETS.map(([k, t, i]) => <button key={k} className={vue === k ? "actif" : ""} onClick={() => setVue(k)} tabIndex={ouvert ? -1 : 0}><span>{i}</span>{t}</button>)}</nav>
         <main>
           {ouvert ? <Formulaire id={ouvert} onFerme={fermerRapport} />
             : vue === "rapports" ? <VueRapports rapports={st.rapports} ouvrir={ouvrirRapport} onSauvegarde={sauvegarder} />
