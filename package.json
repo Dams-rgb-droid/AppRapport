@@ -1,0 +1,17 @@
+{
+  "name": "app-rapport",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "jszip": "3.10.2",
+    "pdf-lib": "1.17.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
