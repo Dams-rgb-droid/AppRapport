@@ -17,12 +17,20 @@ export default function App() {
     setSt({ params: p, listes: await DB.listes(), sites: await DB.sites(), rapports: await DB.rapports(), logo: p.logo instanceof Blob ? p.logo : null });
   }, []);
   useEffect(() => { (async () => { await DB.init(); await reload(); setPrêt(true); if (navigator.storage?.persist) navigator.storage.persist().catch(() => {}); })(); }, [reload]);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [ouvert]);
   const toast = useCallback((t) => { setMsg(t); clearTimeout(toast.t); toast.t = setTimeout(() => setMsg(""), 4500); }, []);
   if (!prêt) return <div className="vide">Chargement…</div>;
   const ctx = { ...st, ipCentre: st.params.ip_centre || {}, reload, toast };
   const sauvegarder = async () => { telecharger(await DB.exporterBase({ complet: true }), `sauvegarde_complete_${maintenant().slice(0, 10)}.json`); await DB.setParam("derniere_sauvegarde", maintenant()); reload(); };
-  const ouvrirRapport = (id) => { window.scrollTo(0, 0); setOuvert(id); };
-  const fermerRapport = () => { window.scrollTo(0, 0); setOuvert(null); reload(); };
+  const ouvrirRapport = (id) => setOuvert(id);
+  const fermerRapport = () => { setOuvert(null); reload(); };
   return (
     <Ctx.Provider value={ctx}>
       <div className="app">
