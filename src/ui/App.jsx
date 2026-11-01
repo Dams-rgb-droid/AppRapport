@@ -21,13 +21,15 @@ export default function App() {
   if (!prêt) return <div className="vide">Chargement…</div>;
   const ctx = { ...st, ipCentre: st.params.ip_centre || {}, reload, toast };
   const sauvegarder = async () => { telecharger(await DB.exporterBase({ complet: true }), `sauvegarde_complete_${maintenant().slice(0, 10)}.json`); await DB.setParam("derniere_sauvegarde", maintenant()); reload(); };
+  const ouvrirRapport = (id) => { window.scrollTo(0, 0); setOuvert(id); };
+  const fermerRapport = () => { window.scrollTo(0, 0); setOuvert(null); reload(); };
   return (
     <Ctx.Provider value={ctx}>
       <div className="app">
         {!ouvert && <nav className="nav">{ONGLETS.map(([k, t, i]) => <button key={k} className={vue === k ? "actif" : ""} onClick={() => setVue(k)}><span>{i}</span>{t}</button>)}</nav>}
         <main>
-          {ouvert ? <Formulaire id={ouvert} onFerme={() => { setOuvert(null); reload(); }} />
-            : vue === "rapports" ? <VueRapports rapports={st.rapports} ouvrir={setOuvert} onSauvegarde={sauvegarder} />
+          {ouvert ? <Formulaire id={ouvert} onFerme={fermerRapport} />
+            : vue === "rapports" ? <VueRapports rapports={st.rapports} ouvrir={ouvrirRapport} onSauvegarde={sauvegarder} />
             : vue === "sites" ? <VueSites /> : <VueReglages key={JSON.stringify(st.params.derniere_sauvegarde)} />}
         </main>
         {msg && <div className="toast" role="status">{msg}</div>}
