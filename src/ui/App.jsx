@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as DB from "../db.js";
 import { Ctx } from "./common.jsx";
 import Formulaire from "./Form.jsx";
@@ -11,6 +11,7 @@ const ONGLETS = [["rapports", "Rapports", "📝"], ["sites", "Sites", "🏢"], [
 
 export default function App() {
   const [prêt, setPrêt] = useState(false), [vue, setVue] = useState("rapports"), [ouvert, setOuvert] = useState(null);
+  const mainRef = useRef(null);
   const [st, setSt] = useState({ params: {}, listes: {}, sites: [], rapports: [], logo: null }), [msg, setMsg] = useState("");
   const reload = useCallback(async () => {
     const p = await DB.params();
@@ -19,9 +20,7 @@ export default function App() {
   useEffect(() => { (async () => { await DB.init(); await reload(); setPrêt(true); if (navigator.storage?.persist) navigator.storage.persist().catch(() => {}); })(); }, [reload]);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      if (mainRef.current) mainRef.current.scrollTop = 0;
     });
     return () => cancelAnimationFrame(frame);
   }, [ouvert, vue]);
@@ -35,7 +34,7 @@ export default function App() {
     <Ctx.Provider value={ctx}>
       <div className="app">
         <nav className={"nav" + (ouvert ? " masque" : "")} aria-hidden={!!ouvert}>{ONGLETS.map(([k, t, i]) => <button key={k} className={vue === k ? "actif" : ""} onClick={() => setVue(k)} tabIndex={ouvert ? -1 : 0}><span>{i}</span>{t}</button>)}</nav>
-        <main>
+        <main ref={mainRef}>
           {ouvert ? <Formulaire id={ouvert} onFerme={fermerRapport} />
             : vue === "rapports" ? <VueRapports rapports={st.rapports} ouvrir={ouvrirRapport} onSauvegarde={sauvegarder} />
             : vue === "sites" ? <VueSites /> : <VueReglages key={JSON.stringify(st.params.derniere_sauvegarde)} />}
