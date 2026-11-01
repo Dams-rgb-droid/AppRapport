@@ -1,11 +1,10 @@
 :root{--bg:#f2f5f9;--carte:#fff;--txt:#17202e;--doux:#5b6678;--marine:#123b73;--accent:#1d5fc4;--trait:#d6dde7;--ok:#16794a;--ko:#b3261e;--warn:#a35a00}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+html::before{content:"";position:fixed;top:0;left:0;right:0;height:constant(safe-area-inset-top);height:env(safe-area-inset-top);background:var(--bg);pointer-events:none;z-index:100}
 .app{min-height:100vh;display:flex;flex-direction:column}
 main{padding:14px 16px 90px;max-width:1100px;width:100%;margin:0 auto}
 .nav{display:flex;background:var(--marine);position:sticky;top:0;z-index:5;padding-top:constant(safe-area-inset-top);padding-top:env(safe-area-inset-top)}
-.nav::before{content:"";position:absolute;top:0;left:0;right:0;height:constant(safe-area-inset-top);height:env(safe-area-inset-top);background:var(--marine);pointer-events:none}
-.form::before{content:"";position:fixed;top:0;left:0;right:0;height:constant(safe-area-inset-top);height:env(safe-area-inset-top);background:var(--bg);pointer-events:none;z-index:3}
 .nav button{position:relative;z-index:1;flex:1;background:none;border:0;color:#cfe0fb;padding:12px 8px;font-size:15px;min-height:48px;cursor:pointer}
 .nav button span{margin-right:6px}.nav button.actif{color:#fff;font-weight:700;box-shadow:inset 0 -3px #fff}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 16px;border:1px solid var(--trait);background:#fff;color:var(--txt);border-radius:10px;font-size:15px;cursor:pointer;font-family:inherit}
