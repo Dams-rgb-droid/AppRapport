@@ -1,5 +1,5 @@
 // Service worker : met l'application en cache pour un fonctionnement 100 % hors ligne.
-const V = "rapports-77aeb20515";
+const V = "rapports-51261ef866";
 const FICHIERS = ["./", "./index.html", "./app.js", "./app.css", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-180.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(V).then((c) => c.addAll(FICHIERS)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== V).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
